@@ -1,6 +1,7 @@
 import subprocess
 import argparse
 import sys
+import os
 
 def install_docker():
     if not check_command_exists("docker"):
@@ -20,7 +21,7 @@ def install_docker_compose():
 def cleanup_aws_files():
     os.remove("awscliv2.zip")
     shutil.rmtree("aws")
-    
+
 def install_aws_cli():
     subprocess.run(["curl", "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip", "-o", "awscliv2.zip"])
     subprocess.run(["unzip", "-o", "awscliv2.zip"])
