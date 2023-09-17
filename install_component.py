@@ -21,6 +21,13 @@ def install_nginx():
     subprocess.run(["sudo", "systemctl", "start", "nginx"])
     subprocess.run(["sudo", "systemctl", "enable", "nginx"])
 
+def configure_nginx_logs_permissions():
+    # Change log file ownership to the 'www-data' user and group
+    subprocess.run(["sudo", "chown", "www-data:www-data", "/var/log/nginx/error.log", "/var/log/nginx/access.log"])
+    
+    # Set appropriate permissions for log files
+    subprocess.run(["sudo", "chmod", "644", "/var/log/nginx/error.log", "/var/log/nginx/access.log"])
+
 def uninstall_all():
     subprocess.run(["sudo", "apt-get", "purge", "-y", "docker.io", "docker-compose", "nginx"])
     subprocess.run(["sudo", "rm", "-rf", "/usr/local/aws", "/usr/local/bin/aws"])
@@ -53,6 +60,7 @@ def uninstall_and_install(args):
     install_docker_compose()
     install_aws_cli()
     install_nginx()
+    configure_nginx_logs_permissions()
 
 def main():
     parser = argparse.ArgumentParser(description="Install and uninstall Docker, Docker Compose, AWS CLI, and Nginx.")
