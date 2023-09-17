@@ -3,6 +3,7 @@
 This script allows you to install and uninstall various software components on your Linux system, including 
 - Docker
 - Docker Compose
+
 It provides an option to uninstall and then reinstall these components.
 
 ## Prerequisites
