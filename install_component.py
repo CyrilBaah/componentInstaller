@@ -3,18 +3,30 @@ import argparse
 import sys
 
 def install_docker():
-    subprocess.run(["sudo", "apt-get", "update"])
-    subprocess.run(["sudo", "apt-get", "install", "-y", "docker.io"])
-    subprocess.run(["sudo", "systemctl", "start", "docker"])
-    subprocess.run(["sudo", "systemctl", "enable", "docker"])
+    if not check_command_exists("docker"):
+        subprocess.run(["sudo", "apt-get", "update"])
+        subprocess.run(["sudo", "apt-get", "install", "-y", "docker.io"])
+        subprocess.run(["sudo", "systemctl", "start", "docker"])
+        subprocess.run(["sudo", "systemctl", "enable", "docker"])
+    else:
+        print("Docker is already installed.")
 
 def install_docker_compose():
-    subprocess.run(["sudo", "apt-get", "install", "-y", "docker-compose"])
+    if not check_command_exists("docker-compose"):
+        subprocess.run(["sudo", "apt-get", "install", "-y", "docker-compose"])
+    else:
+        print("Docker Compose is already installed.")
 
+def cleanup_aws_files():
+    os.remove("awscliv2.zip")
+    shutil.rmtree("aws")
+    
 def install_aws_cli():
     subprocess.run(["curl", "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip", "-o", "awscliv2.zip"])
     subprocess.run(["unzip", "-o", "awscliv2.zip"])
     subprocess.run(["sudo", "./aws/install"])
+    cleanup_aws_files()
+
 
 def install_nginx():
     subprocess.run(["sudo", "apt-get", "install", "-y", "nginx"])
@@ -40,6 +52,12 @@ def check_and_install_unzip():
         subprocess.run(["sudo", "apt-get", "install", "-y", "unzip"])
         print("'unzip' has been installed.")
 
+def install_curl():
+    if not check_command_exists("curl"):
+        subprocess.run(["sudo", "apt-get", "install", "-y", "curl"])
+    else:
+        print("curl is already installed.")
+
 def check_command_exists(command):
     try:
         subprocess.run([command], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -59,6 +77,7 @@ def uninstall_and_install(args):
     install_docker()
     install_docker_compose()
     install_aws_cli()
+    install_curl()
     install_nginx()
     configure_nginx_logs_permissions()
 

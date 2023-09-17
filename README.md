@@ -3,7 +3,9 @@
 This script allows you to install and uninstall various software components on your Linux system, including 
 - Docker
 - Docker Compose
-
+- Curl
+- Nginx
+- AWS CLI
 It provides an option to uninstall and then reinstall these components.
 
 ## Prerequisites
