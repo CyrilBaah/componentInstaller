@@ -2,6 +2,7 @@ import subprocess
 import argparse
 import sys
 import os
+import shutil
 
 def install_docker():
     if not check_command_exists("docker"):
